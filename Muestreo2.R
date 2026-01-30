@@ -90,7 +90,7 @@ parametros_interes <- function(poblacion, lado){
   res<-data.frame(
     Area_ha = A,
     Total_N = length(poblacion[[1]]),
-    Total_G = sum(pi*poblacion$diam^2)/4
+    Total_G = (1/10000)*sum(pi*poblacion$diam^2)/4
   )
   res$N <- res$Total_N/A
   res$G <- res$Total_G/A
