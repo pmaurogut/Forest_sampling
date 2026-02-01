@@ -50,6 +50,7 @@ get_points <- function(population,point,type){
     res<-res[,c("Parcela","type","x0","y0","x","y","diam","ht","gi_m2",type)]
     res$area_parecela_ha<-(pi*res[,type]^2)/10000
     res$EXP_FAC <- 1/res$area_parecela_ha
+    res<-res[order(res$diam,decreasing = TRUE),]
     return(res)
   }
   
