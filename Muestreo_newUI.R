@@ -5,6 +5,7 @@ library(ggforce)
 library(dplyr)
 library(purrr)
 library(DT)
+library(thematic)
 
 make_population <-function(N,L){
 
@@ -291,6 +292,8 @@ controls <- list(lado,pop_size,space,
 {
   ui <- page_sidebar(
     
+    theme=bs_theme(preset = "darkly"),
+
     title = "Muestreo forestal",
     sidebar=sidebar(title = "Opciones población y muestra",controls,open="always"),
     
@@ -377,8 +380,8 @@ controls <- list(lado,pop_size,space,
 }
 #### Server ####
 {
-  server <- function(input, output) {
-    
+  server <- function(input, output, session) {
+    # thematic::thematic_shiny()
     ##### reactive values #####
     data<-reactiveValues(forest_data=forest_data,par_int=par_int,
                          samp_points=samp_points,est=est,samp_points_n=samp_points_n,est_n=est_n)
@@ -508,8 +511,8 @@ controls <- list(lado,pop_size,space,
     output$plot_poblacion<-renderPlot({
       p <- gg_plot()
       p +
-        geom_label(aes(x=x,y=y-3,label=diam),size=3,fill="darkgreen",alpha=0.3)+
-        geom_label(aes(x=x,y=y-8,label=ht),size=3,fill="blue",alpha=0.3)+
+        geom_label(aes(x=x,y=y-3,label=paste("d: ",diam)),size=4,fill="darkgreen",alpha=0.3)+
+        geom_label(aes(x=x,y=y-8,label=paste("ht: ",diam)),size=4,fill="blue",alpha=0.3)+
         ggtitle("Población")
     })
     
