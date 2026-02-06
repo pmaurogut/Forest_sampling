@@ -35,12 +35,12 @@ get_trees <- function(population,point,type){
   pick <- sqrt((population$x-point$x)^2+(population$y-point$y)^2)<=population[[type]]
   if(all(!pick)){
     return(data.frame(
-      type=type,x0=NA,y0=NA,x=NA,y=NA,Parc=point$Parc,
-      NA,diam=NA,ht=NA,gi_m2=NA,A_parc_ha=NA,EXP_FAC=NA))
+      type=gsub("radio","_",type),x0=NA,y0=NA,x=NA,y=NA,Parc=point$Parc,
+      diam=NA,ht=NA,gi_m2=NA,A_parc_ha=NA,EXP_FAC=NA))
   }else{
     res<-population[pick, ]
-    res$Parc<- point$Par
-    res$type <- gsub("r_","radio_",type)
+    res$Parc<- point$Parc
+    res$type <- gsub("radio","r_",type)
     res$x0 <- point$x
     res$y0 <- point$y
     res$gi_m2 <- (pi*(1/4)*res$diam^2)/10000
@@ -201,25 +201,29 @@ plot_selection <- function(p,selected,samp_points,type,tree_center=TRUE,all=FALS
 
 plot_n_selections <- function(p,selected,samp_points,type,tree_center=TRUE,all=FALSE){
   
+  selected$Parc <- as.factor(selected$Parc)
+  samp_points$Parc <- as.factor(samp_points$Parc)
   title <- switch(type,
                   r_fijo = "Radio fijo 15 m",
                   r_variable = "R anidados d<15 cm 10, d>=15 cm 20m",
                   r_relascopio = "Relascopio BAF=1"
   )
   if(all){
-    p <- p + geom_circle(aes(x0=x,y0=y,r=.data[[type]]), fill="grey50",alpha=0.2)
+    p <- p + geom_circle(aes(x0=x,y0=y,r=.data[[type]]/20), fill="grey50",alpha=0.2)
   }
-  
+
   if(!all(is.na(selected$diam))){
     if(tree_center){
-      p <- p  + geom_circle(data=selected,aes(x0=x,y0=y,r=.data[[type]],fill= factor(Parc)),alpha=0.2)
+      p <- p  + geom_circle(data=selected,aes(x0=x,y0=y,r=.data[[type]],fill=Parc),alpha=0.2)
     }else{
-      selected2 <- selected |> group_by(Parc,!! sym(type)) |> filter(row_number()==1) |> ungroup()
-      p <- p  + geom_circle(data=selected2,aes(x0=x0,y0=y0,r=.data[[type]],fill= factor(Parc)),alpha=0.2)  
+      selected2 <- selected |> group_by(Parc, !!sym(type)) |> filter(row_number()==1) |> ungroup()
+      print("Hola")
+      print(selected2)
+      p <- p  + geom_circle(data=selected2,aes(x0=x0,y0=y0,r=.data[[type]],fill=Parc),alpha=0.2)  
     }
-    p <- p + geom_circle(data=selected,aes(x0=x,y0=y,r=diam/20),col="green",fill=factor(Parc))
+    p <- p + geom_circle(data=selected,aes(x0=x,y0=y,r=diam/20),fill="green")
   }
-  p <- p + geom_point(data=samp_points,aes(x=x,y=y),shape=13,col="red",size=4)
+  p <- p + geom_point(data=samp_points,aes(x=x,y=y,col=Parc),shape=13,size=4)
   p <- p + guides(fill=FALSE,color=FALSE)+ggtitle(title)
   p
 }

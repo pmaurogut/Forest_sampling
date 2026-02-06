@@ -63,8 +63,8 @@ server <- function(input, output, session) {
   
   observeEvent(input$muestra,{
     add_estimate()})
-  # observeEvent(input$n_muestras,add_n_estimate())
-  # observeEvent(input$n,reset_estimate())
+  observeEvent(input$n_muestras,add_estimate())
+  observeEvent(input$n,update_pop())
   observeEvent(input$plot_type1,{
     update_est()
     })
@@ -193,23 +193,24 @@ server <- function(input, output, session) {
 
 
   # ##### n plots #####
-  # output$muestra_n <- renderTable({data$samp_points_n})
-  # 
-  # output$plot_selected2<- renderPlot({
-  #   field <- switch(input$plot_type2,
-  #                   fijo = "r_fijo",
-  #                   variable = "r_variable",
-  #                   relascopio = "r_relascopio"
-  #   )
-  #   selected <- get_n_points(data$forest_data,data$samp_points_n,field)
-  #   print(selected)
-  #   plot_n_selections(base_plot(),selected,data$samp_points_n,type=field,tree_center = TRUE)
-  # })
-  # 
-  # 
-  # output$par_int2<-renderTable({
-  #   data$par_int
-  # })
+  output$muestra_n <- renderTable({
+    trees <- get_n_points(forest(),samp_points(),input$plot_type2)
+    trees
+  })
+
+  output$plot_selected2<- renderPlot({
+
+    selected <- get_n_points(forest(),samp_points(),input$plot_type2)
+    print(selected)
+    print(samp_points())
+    plot_n_selections(base_plot(),selected,samp_points(),type=input$plot_type2,tree_center = FALSE)
+    
+  })
+
+
+  output$par_int2<-renderTable({
+    par_int()
+  })
   
   
   
