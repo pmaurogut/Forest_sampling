@@ -1,7 +1,6 @@
 # initial values
-library(shiny)
 
-
+source("functions.R")
 init_pop <- make_population(20,100)
 init_samp_points <- sampling_points(10,100)
 trees <- get_n_points(init_pop,init_samp_points,"r_fijo")

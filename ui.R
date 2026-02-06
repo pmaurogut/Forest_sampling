@@ -1,4 +1,11 @@
-
+library(shiny)
+library(bslib)
+library(ggplot2)
+library(ggforce)
+library(dplyr)
+library(purrr)
+library(DT)
+library(thematic)
 
 make_plot_type <- function(id){
   radioButtons(id, "Tipo de Parc:",c("Radio fijo 15 m" = "r_fijo",
