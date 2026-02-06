@@ -1,3 +1,10 @@
+library(bslib)
+library(ggplot2)
+library(ggforce)
+library(dplyr)
+library(purrr)
+library(DT)
+library(thematic)
 
 make_population <-function(N,L){
   

@@ -1,12 +1,5 @@
 # initial values
 library(shiny)
-library(bslib)
-library(ggplot2)
-library(ggforce)
-library(dplyr)
-library(purrr)
-library(DT)
-library(thematic)
 
 
 init_pop <- make_population(20,100)
