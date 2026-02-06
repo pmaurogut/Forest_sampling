@@ -1,2 +1,4 @@
-library(shiny)
-shinyApp(ui, server)
+library("shiny")
+shinnyApp(ui,server)
+
+
