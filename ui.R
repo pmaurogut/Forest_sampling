@@ -43,92 +43,90 @@ controls <- list(lado,pop_size,space,samp_size,
 
 
 #### UI ####
-{
-  ui <- page_sidebar(
+ui <- page_sidebar(
+  
+  theme=bs_theme(preset = "darkly"),
+  
+  title = "Muestreo forestal",
+  sidebar=sidebar(title = "Opciones población y muestra",controls,open="always"),
+  
+  navset_card_underline(
+    title = "Ejemplos",
+    nav_panel("Población y parámetros de interés",
+              
+              layout_columns(col_widths=c(6,4,2),
+                             card(card_header("Mapa Población"),plotOutput("plot_poblacion",width=800,height=800)),
+                             card(card_header("Datos Población"),tableOutput('poblacion')),
+                             card(card_header("Parámetros de interés"),tableOutput('tabla_interes1'))
+              )
+    ),
     
-    theme=bs_theme(preset = "darkly"),
+    nav_panel("Selección de muestras",
+              layout_columns(col_widths=c(4,4,4,4,4,4),
+                             card(plotOutput("plot_fijo",width=500,height=500)),
+                             card(plotOutput("plot_variable",width=500,height=500)),
+                             card(plotOutput("plot_relascopio",width=500,height=500)),
+                             card(plotOutput("plot_fijo2",width=500,height=500)),
+                             card(plotOutput("plot_variable2",width=500,height=500)),
+                             card(plotOutput("plot_relascopio2",width=500,height=500))
+              )
+    ),
     
-    title = "Muestreo forestal",
-    sidebar=sidebar(title = "Opciones población y muestra",controls,open="always"),
+    nav_panel("Estimación una parcela",
+              layout_columns(col_widths=c(5,4,3),
+                             card(card_header("Tipo de Parcela"),
+                                  card(layout_columns(make_plot_type("plot_type1"),make_par_int("par_int1"))),
+                                  card(tableOutput('tabla_interes2')),
+                                  card(tableOutput('muestra')),
+                                  
+                             ),
+                             card(card_header("Selección árboles"),
+                                  card(plotOutput("plot_selected1",width=500,height=500)),
+                                  card(tableOutput("estimacion1"))
+                             ),
+                             card(card_header("Estimaciones"),
+                                  card(plotOutput("plot_res1",width=400,height=200),min_height = 400),
+                                  card(tableOutput("tabla_acc"),min_height = 400)
+                             )
+              )
+    ),
     
-    navset_card_underline(
-      title = "Ejemplos",
-      nav_panel("Población y parámetros de interés",
-                
-                layout_columns(col_widths=c(6,4,2),
-                               card(card_header("Mapa Población"),plotOutput("plot_poblacion",width=800,height=800)),
-                               card(card_header("Datos Población"),tableOutput('poblacion')),
-                               card(card_header("Parámetros de interés"),tableOutput('tabla_interes1'))
-                )
-      ),
-      
-      nav_panel("Selección de muestras",
-                layout_columns(col_widths=c(4,4,4,4,4,4),
-                               card(plotOutput("plot_fijo",width=500,height=500)),
-                               card(plotOutput("plot_variable",width=500,height=500)),
-                               card(plotOutput("plot_relascopio",width=500,height=500)),
-                               card(plotOutput("plot_fijo2",width=500,height=500)),
-                               card(plotOutput("plot_variable2",width=500,height=500)),
-                               card(plotOutput("plot_relascopio2",width=500,height=500))
-                )
-      ),
-      
-      nav_panel("Estimación una parcela",
-                layout_columns(col_widths=c(5,4,3),
-                               card(card_header("Tipo de Parcela"),
-                                    card(layout_columns(make_plot_type("plot_type1"),make_par_int("par_int1"))),
-                                    card(tableOutput('tabla_interes2')),
-                                    card(tableOutput('muestra')),
-                                    
-                               ),
-                               card(card_header("Selección árboles"),
-                                    card(plotOutput("plot_selected1",width=500,height=500)),
-                                    card(tableOutput("estimacion1"))
-                               ),
-                               card(card_header("Estimaciones"),
-                                    card(plotOutput("plot_res1",width=400,height=200),min_height = 400),
-                                    card(tableOutput("tabla_acc"),min_height = 400)
-                               )
-                )
-      ),
-      
-      nav_panel("Estimación múltiples parcelas",
-                layout_columns(col_widths=c(5,4,3),
-                               card(card_header("Tipo de Parcela"),
-                                    card(layout_columns(make_plot_type("plot_type2"),make_par_int("par_int2"),samp_size)),
-                                    card(tableOutput('tabla_interes3')),
-                                    card(tableOutput('muestra_n')),
-                                    
-                               ),
-                               card(card_header("Selección árboles"),
-                                    card(plotOutput("plot_selected2",width=400,height=400)),
-                                    card(tableOutput("tabla_acc2"))
-                               ),
-                               card(card_header("Estimaciones"),
-                                    card(plotOutput("plot_res2",width=400,height=200),min_height = 400),
-                                    card(plotOutput("plot_means_n",width=400,height=200),min_height = 400)
-                               )
-                )
-      ),
-      
-      nav_panel("Distribución muestral y errores",
-                layout_columns(col_widths=c(5,4,3),
-                               card(card_header("Tipo de Parcela"),
-                                    card(layout_columns(make_plot_type("plot_type3"),make_par_int("par_int3"),reps)),
-                                    card(tableOutput('tabla_interes4')),
-                                    card(tableOutput('muestra3')),
-                                    
-                               ),
-                               card(card_header("Selección árboles"),
-                                    card(plotOutput("plot_selected3",width=400,height=400)),
-                                    card(tableOutput("estimacion3"))
-                               ),
-                               card(card_header("Estimaciones"),
-                                    card(plotOutput("plot_res3",width=400,height=200),min_height = 400),
-                                    card(tableOutput("tabla_acc3"),min_height = 400)
-                               )
-                )
-      )
+    nav_panel("Estimación múltiples parcelas",
+              layout_columns(col_widths=c(5,4,3),
+                             card(card_header("Tipo de Parcela"),
+                                  card(layout_columns(make_plot_type("plot_type2"),make_par_int("par_int2"),samp_size)),
+                                  card(tableOutput('tabla_interes3')),
+                                  card(tableOutput('muestra_n')),
+                                  
+                             ),
+                             card(card_header("Selección árboles"),
+                                  card(plotOutput("plot_selected2",width=400,height=400)),
+                                  card(tableOutput("tabla_acc2"))
+                             ),
+                             card(card_header("Estimaciones"),
+                                  card(plotOutput("plot_res2",width=400,height=200),min_height = 400),
+                                  card(plotOutput("plot_means_n",width=400,height=200),min_height = 400)
+                             )
+              )
+    ),
+    
+    nav_panel("Distribución muestral y errores",
+              layout_columns(col_widths=c(5,4,3),
+                             card(card_header("Tipo de Parcela"),
+                                  card(layout_columns(make_plot_type("plot_type3"),make_par_int("par_int3"),reps)),
+                                  card(tableOutput('tabla_interes4')),
+                                  card(tableOutput('muestra3')),
+                                  
+                             ),
+                             card(card_header("Selección árboles"),
+                                  card(plotOutput("plot_selected3",width=400,height=400)),
+                                  card(tableOutput("estimacion3"))
+                             ),
+                             card(card_header("Estimaciones"),
+                                  card(plotOutput("plot_res3",width=400,height=200),min_height = 400),
+                                  card(tableOutput("tabla_acc3"),min_height = 400)
+                             )
+              )
     )
   )
-}
+)
