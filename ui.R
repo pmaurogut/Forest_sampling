@@ -45,13 +45,21 @@ controls <- list(lado,pop_size,samp_size,plot_type,space,
 
 
 
-
-
 #### UI ####
 ui <- page_sidebar(
   
-  theme=bs_theme(preset = "darkly"),
-  
+  theme=bs_theme(version=5,preset = "darkly"),
+  # tags$head(
+  #   tags$style(HTML("
+  #     .bslib-page-title {
+  #       color: black;
+  #       background-color: white;
+  #       background: green;
+  #       padding: 10px;
+  #       bs-emphasis-color: white;
+  #     }
+  #   "))
+  # ),
   title = "Muestreo forestal",
   sidebar=sidebar(title = "Opciones población y muestra",controls,open="always"),
   

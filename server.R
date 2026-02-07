@@ -51,7 +51,6 @@ server <- function(input, output, session) {
     new_estimates <- n_estimaciones(trees,input$lado)
     new_estimates$Rep <- est()$Rep[1]+1
     new_estimates <- new_estimates[,c("Rep",names_est_n)]
-    print(new_point)
     old <- est()
     new <- rbind(new_estimates,old)
     est(new)
@@ -77,7 +76,6 @@ server <- function(input, output, session) {
   })
   
   output$plot_poblacion<-renderPlot({
-    print(input$lado)
     p <- base_plot()
     if(input$add_hd){
       p <- p +
@@ -94,7 +92,6 @@ server <- function(input, output, session) {
   ##### Seleccion #####
   output$plot_fijo <- renderPlot({
     all <- input$all_trees
-    print(samp_points()[1,])
     selected <- get_trees(forest(),samp_points()[1,],"r_fijo")
     plot_selection(base_plot(),selected,samp_points()[1,],"r_fijo",
                    all=all,add_hd=input$add_hd)
@@ -146,7 +143,8 @@ server <- function(input, output, session) {
   output$plot_selected1 <- renderPlot({
     selected <- get_trees(forest(),samp_points()[1,],input$plot_type1)
     plot_selection(base_plot(),selected,samp_points()[1,],
-                   type=input$plot_type1,tree_center = input$centered=="arbol")
+                   type=input$plot_type1,tree_center = input$centered=="arbol",
+                   all=input$all_trees)
   })
 
   output$estimacion1<-renderTable({
@@ -173,9 +171,10 @@ server <- function(input, output, session) {
   
   output$plot_selected2<-renderPlot({
       selected <- get_n_points(forest(),samp_points(),input$plot_type1)
-      print(samp_points())
       plot_n_selections(base_plot(),selected,samp_points(),
-                        type=input$plot_type1,tree_center = input$centered=="arbol")
+                        type=input$plot_type1,
+                        tree_center = input$centered=="arbol",
+                        all=input$all_trees)
   })
   
   output$n_estimaciones<-renderTable({

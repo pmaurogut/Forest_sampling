@@ -96,7 +96,6 @@ parametros_interes <- function(poblacion, lado,rotate=TRUE){
 }
 
 estimacion <- function(sample,lado,rotate=TRUE){
-  print(sample)
   if(is.na(sample$diam[1])){
     res <- data.frame(Parc=sample$Parc[1],Total_N=0,Total_G=0,
                       Total_h=0,N=0,G=0,h_media=0,dg=0,Ho=0)
@@ -109,9 +108,7 @@ estimacion <- function(sample,lado,rotate=TRUE){
     }else{
       return(res)
     }
-    
-    
-    
+
   }
   sample <- sample[order(sample$diam,decreasing = TRUE),]
   sample$cum_sum<-cumsum(sample$EXP_FAC)
@@ -217,8 +214,6 @@ plot_n_selections <- function(p,selected,samp_points,type,tree_center=TRUE,all=F
       p <- p  + geom_circle(data=selected,aes(x0=x,y0=y,r=.data[[type]],fill=Parc),alpha=0.2)
     }else{
       selected2 <- selected |> group_by(Parc, !!sym(type)) |> filter(row_number()==1) |> ungroup()
-      print("Hola")
-      print(selected2)
       p <- p  + geom_circle(data=selected2,aes(x0=x0,y0=y0,r=.data[[type]],fill=Parc),alpha=0.2)  
     }
     p <- p + geom_circle(data=selected,aes(x0=x,y0=y,r=diam/20),fill="green")
@@ -229,8 +224,7 @@ plot_n_selections <- function(p,selected,samp_points,type,tree_center=TRUE,all=F
 }
 
 prepare_long1 <- function(data){
-  
-  print(data)
+
   data_long <- pivot_longer(data[,c("Rep","Parc","N","G","h_media","dg","Ho")],
                             cols = c("N","G","h_media","dg","Ho"),
                             names_to = "parametro",values_to = "estimacion")
@@ -280,7 +274,6 @@ add_samples_plot<-function(p_int,first,parametro="G"){
 
 prepare_long_n <- function(data){
 
-  print(data)
   data_long <- pivot_longer(data[,c("Rep","Parc","N","G","h_media","dg","Ho")],
                             cols = c("N","G","h_media","dg","Ho"),
                             names_to = "parametro",values_to = "estimacion")
@@ -302,7 +295,7 @@ prepare_long_n <- function(data){
   
   variation<- rbind(variation,variation2)
   variation$type_est <- factor(variation$type_est,levels=c("1 parcela","n-parcelas"),ordered=TRUE)
-  print(variation)
+
   return(list(all=all,variation=variation))
 }
 
@@ -317,7 +310,7 @@ add_samples_n_plots<-function(p_int,all){
   
 
   to_plot <- prepare_long_n(all)
-  print(to_plot)
+
   ggplot(to_plot$all) +
     facet_grid(rows=vars(type_est),cols=vars(parametro),scales="free_x")+
     geom_point(aes(x=estimacion,y=0.25,col=type_est,fill=type_est),shape=20,size=4)+
