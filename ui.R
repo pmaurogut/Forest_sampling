@@ -37,11 +37,12 @@ n_muestras <- actionButton("n_muestras", "Toma n muestras",color="blue",alpha=0.
 areas_inclusion <- checkboxInput("all_trees","Todas las areas de inclusion",value = FALSE)
 add_hd<- checkboxInput("add_hd","Añade altura y diámetro",value = FALSE)
 
-
+samp_dist <- actionButton("samp_dist", "Genera distribuciones muestrales")
+reps <- sliderInput("reps","Replicas",value = 3,min = 1,max = 5,step=1)
 
 controls <- list(lado,pop_size,samp_size,plot_type,space,
                  centrado_arbol,areas_inclusion,add_hd,space,
-                 reset_population,space,muestra)
+                 reset_population,muestra,samp_dist)
 
 
 
@@ -49,17 +50,6 @@ controls <- list(lado,pop_size,samp_size,plot_type,space,
 ui <- page_navbar(
   
   theme=bs_theme(version=5,preset = "darkly"),
-  # tags$head(
-  #   tags$style(HTML("
-  #     .bslib-page-title {
-  #       color: black;
-  #       background-color: white;
-  #       background: green;
-  #       padding: 10px;
-  #       bs-emphasis-color: white;
-  #     }
-  #   "))
-  # ),
   title = "Muestreo forestal",
   nav_spacer(),
   sidebar=sidebar(title = "Opciones población y muestra",controls,open="always"),
@@ -119,23 +109,34 @@ ui <- page_navbar(
               )
     ),
     
-    nav_panel("Distribución muestral y errores",
-              layout_columns(col_widths=c(5,4,3),
-                             card(card_header("Tipo de Parcela"),
-                                  card(),
-                                  card(tableOutput('tabla_interes4')),
-                                  card(tableOutput('muestra3')),
-                                  
-                             ),
-                             card(card_header("Selección árboles"),
-                                  card(plotOutput("plot_selected3",width=400,height=400)),
-                                  card(tableOutput("estimacion3"))
-                             ),
-                             card(card_header("Estimaciones"),
-                                  card(plotOutput("plot_res3",width=400,height=200),min_height = 400),
-                                  card(tableOutput("tabla_acc3"),min_height = 400)
-                             )
-              )
-    )
+  nav_panel("Distribución muestral",
+            layout_columns(col_widths=c(2,5,5),
+                           card(card_header("Población"),
+                                tableOutput('tabla_interes4'),
+                                plotOutput("plot_selected3",width=200)
+                           ),
+                           card(card_header("Cambio en la varianza al aumentar n"),
+                                card(plotOutput("var_n",width=500,height=750))
+                           ),
+                           card(card_header("Aproximacion a una normal"),
+                                card(plotOutput("normal_approx",width=500,height=750))
+                           )
+            )
+  ),
+  nav_panel("Error de muestreo",
+            layout_columns(col_widths=c(5,7),
+                           card(card_header("Parámetros de interés y muestra"),
+                                card(layout_columns(col_widths=c(5,7),
+                                                    tableOutput('tabla_interes5'),
+                                                    plotOutput("plot_selected6",width=400,height=400)
+                                )),
+                                card(tableOutput('n_estimaciones2'),min_height = 450),
+                                
+                           ),
+                           card(card_header("Estimación con una parcela vs estimación con n parcelas"),
+                                card(plotOutput("plot_res3",width=950,height=750))
+                           )
+            )
+  )
   # )
 )
