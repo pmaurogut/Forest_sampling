@@ -375,7 +375,7 @@ normal_approx <- function(estimates,n,type,variation,K){
   
   norm <- estimates %>% 
     group_by(parametro) %>% 
-    reframe(x=seq(min(estimacion),max(estimacion),length.out=100),y = dnorm(x, mean = mean(mean,na.rm=TRUE), sd = mean(sd,na.rm=TRUE)/sqrt(n) )) 
+    reframe(x=seq(min(estimacion),max(estimacion),length.out=100),y = dnorm(x, mean = mean(mean,na.rm=TRUE), sd = mean(sd_n,na.rm=TRUE) )) 
   print(norm)
 
   ggplot(data=norm) +
