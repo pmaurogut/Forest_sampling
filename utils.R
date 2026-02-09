@@ -234,7 +234,7 @@ plot_n_selections <- function(p,trees,tree_center=TRUE,all=FALSE){
     }
     p <- p + geom_circle(data=trees,aes(x0=x,y0=y,r=diam/20),fill="green")
   }
-  p <- p + geom_point(data=points,aes(x=x,y=y,col=Parc),shape=13,size=4)
+  p <- p + geom_point(data=points,aes(x=xp,y=yp,col=Parc),shape=13,size=4)
   p <- p + guides(fill=FALSE,color=FALSE)+ggtitle(title)
   p
 }

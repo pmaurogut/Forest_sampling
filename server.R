@@ -80,6 +80,13 @@ server <- function(input, output, session) {
     pos(c(sample(1:K,input$n,replace = TRUE),pos()))
   })
   
+  observeEvent(input$samp_dist,{
+    new_val <- isolate(input$n)
+    new_val <- new_val+1
+    new_val <- ifelse(new_val>50,1,new_val)
+    updateSelectInput(inputId = "n",selected = new_val)
+  })
+  
   
   ##### Population #####
   
