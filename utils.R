@@ -348,7 +348,7 @@ normal_approx <- function(estimates,n,type,variation,K){
   
   reps <- floor(K/n)
   last <- reps*n
-  
+  variation <- variation[variation$Type==type,]
   variation$x_min <- variation$mean-2*variation$sd
   variation$x_max <- variation$mean+2*variation$sd
   
@@ -382,8 +382,9 @@ normal_approx <- function(estimates,n,type,variation,K){
     facet_wrap(.~ parametro,scales="free") +
     geom_line(data=norm,aes(x=x,y = y),col="blue") + 
     geom_point(data=estimates,aes(x=estimacion,y=0),shape=20,col="red")+
-    geom_density(data=estimates,aes(x=estimacion),fill="red",colour = "red",alpha=0.2)+
-    geom_vline(data=estimates,aes(xintercept=mean),colour = "red")+
+    geom_density(data=estimates,aes(x=estimacion),fill="red",colour = "red",alpha=0.2,bw = "ucv")+
+    geom_vline(data=variation,aes(xintercept=mean),colour = "red")+
+    geom_point(data=limits,aes(x=value,y=0),colour = "red",alpha=0)+
     ggtitle("Aproximación a una distribución normal al aumentar n")
   
 }

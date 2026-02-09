@@ -20,11 +20,11 @@ server <- function(input, output, session) {
   pos <- reactiveVal(c(1))
 
   variation<-reactive({
-    data_long <- pivot_longer(est()[,c("N","G","h_media","dg","Ho")],
+    data_long <- pivot_longer(est()[,c("Type","N","G","h_media","dg","Ho")],
                               cols = c("N","G","h_media","dg","Ho"),
                               names_to = "parametro",values_to = "estimacion")
 
-    data_long|> group_by(parametro)|> 
+    data_long|> group_by(parametro,Type)|> 
       summarise(mean=mean(estimacion,na.rm=TRUE),sd=sd(estimacion,na.rm=TRUE)) 
   })
   
@@ -224,6 +224,7 @@ server <- function(input, output, session) {
   output$var_n<- renderPlot({
     a<-data.frame(n=1:50,id=1)
     var <- variation()
+    var <- var[var$Type==input$plot_type1,]
     var <- merge(var,a)
     var$sd_n <- ((var$sd)^2)/var$n
     var$color <- ifelse(var$n==input$n,"red","black")
@@ -244,6 +245,7 @@ server <- function(input, output, session) {
     n <- input$n
     type <- input$plot_type1
     variation <- variation()
+
     print(estimates)
     print(variation)
     normal_approx(estimates,n,type,variation,K)
