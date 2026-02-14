@@ -8,9 +8,7 @@ library(tidyr)
 library(DT)
 library(thematic)
 library(htmltools)
-library(rmarkdown)
-
-
+library(shinyhelper)
 
 plot_type<- radioButtons("plot_type1" , "Tipo de parcela:",
                          c("R fijo 15 m" = "r_fijo",
@@ -71,7 +69,7 @@ ui <- page_navbar(
           fluidRow({   
             card(
               card_header("Explicación"),
-              htmlOutput("pop_help"),full_screen = TRUE, height=200
+              withMathJax(htmltools::includeMarkdown("Poblacion.Rmd")),full_screen = TRUE, height=200
             )
           })
     ),
@@ -90,7 +88,7 @@ ui <- page_navbar(
             fluidRow({
               card(
                 card_header("Explicación",class = "bg-dark"),
-                card_body(includeHTML("Poblacion.html")),full_screen = TRUE, height=200
+                withMathJax(htmltools::includeMarkdown("Poblacion.Rmd")),full_screen = TRUE, height=200
               )
             })
     ),
