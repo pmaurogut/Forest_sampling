@@ -97,11 +97,11 @@ ui <- page_navbar(
             fluidRow(
               layout_columns(col_widths=c(5,7),height = 800,
                              card(card_header("Parámetros de interés y muestra"),
-                                  card(layout_columns(col_widths=c(5,7),
+                                  card(layout_columns(col_widths=c(5,7),row_heights = 800,
                                                       tableOutput('tabla_interes2'),
                                                       plotOutput("plot_selected1",width=400,height=400)
                                   )),
-                                  card(tableOutput('muestra'),min_height = 450),
+                                  card(tableOutput('muestra'),min_height = 200),
                                   
                              ),
                              card(card_header("Estimaciones"),
